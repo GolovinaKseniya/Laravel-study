@@ -1,0 +1,18 @@
+{
+    "name": "dev/lara-study",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Kseniya Golovina",
+            "email": "kseniya.golovina@devit-team.com"
+        }
+    ],
+    "autoload": {
+        "classmap": ["test"],
+        "psr-4": {
+            "First\\": "First",
+            "App\\": "app"
+        }
+    },
+    "description": "Project laravel study"
+}
