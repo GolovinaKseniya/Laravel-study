@@ -8,7 +8,9 @@
         }
     ],
     "autoload": {
-        "classmap": ["test"],
+        "classmap": [
+            "test"
+        ],
         "psr-4": {
             "First\\": "First",
             "App\\": "app"

@@ -20,18 +20,18 @@ class ComposerStaticInite230d26f44473624dbe1905ac997089e
     public static $prefixDirsPsr4 = array (
         'First\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/First',
+            0 => __DIR__ . '/../lara-study',
         ),
         'App\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/app',
+            0 => __DIR__ . '/../lara-study' . '/app',
         ),
     );
 
     public static $classMap = array (
-        'Test1' => __DIR__ . '/../..' . '/test/Test1.php',
-        'Test2' => __DIR__ . '/../..' . '/test/Test2.php',
-        'Test3' => __DIR__ . '/../..' . '/test/Test3.php',
+        'Test1' => __DIR__ . '/../lara-study',
+        'Test2' => __DIR__ . '/../lara-study',
+        'Test3' => __DIR__ . '/../lara-study',
     );
 
     public static function getInitializer(ClassLoader $loader)
