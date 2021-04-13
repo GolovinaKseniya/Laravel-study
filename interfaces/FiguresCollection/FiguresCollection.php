@@ -4,11 +4,13 @@ class FiguresCollection
 {
     public $figures = [];
 
-    public function addFigure(Figure $f) {
+    public function addFigure(Figure $f)
+    {
         $this->figures [] = $f;
     }
 
-    public function getSumFigures() {
+    public function getSumFigures()
+    {
         $sum = 0;
         foreach ($this->figures as $item) {
             $sum += $item->getSquare();
@@ -17,7 +19,8 @@ class FiguresCollection
         return $sum;
     }
 
-    public function getTotalPerimeter() {
+    public function getTotalPerimeter()
+    {
         $perimeter = 0;
 
         foreach ($this->figures as $item) {

@@ -13,6 +13,6 @@ class Cube implements Figure3d
 
     public function getSurfaceSquare()
     {
-        return 6* ($this->a * $this->a);
+        return 6 * ($this->a * $this->a);
     }
 }
