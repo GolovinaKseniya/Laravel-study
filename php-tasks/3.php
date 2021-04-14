@@ -4,4 +4,17 @@
  * ('х', 'у', 'у'), (10, 20, 30)
  * */
 
+$arr1 = [10, 20, 30];
+$arr2 = ['х', 'у', 'z'];
 
+function arrayMerge($arr1, $arr2)
+{
+    $merge_array = [];
+    for ($i = 0; $i < sizeof($arr1); $i++) {
+        $merge_array[$arr2[$i]] = $arr1[$i];
+    }
+
+    return $merge_array;
+}
+
+var_dump(arrayMerge($arr1, $arr2));
