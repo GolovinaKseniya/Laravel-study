@@ -10,7 +10,9 @@ function findValue($value, $array)
             $var = findValue($value, $item);
             if (!$var) {
                 continue;
-            } else return true;
+            } else {
+                return true;
+            }
         } else {
             if ($item === $value) {
                 return true;
