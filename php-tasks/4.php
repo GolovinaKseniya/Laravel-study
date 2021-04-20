@@ -1,7 +1,10 @@
 <?php
 
 $find_value = 't';
+$a = new stdClass();
 $array = [['a', 3, 65, 'ft'], ['fd', 4, 615, 't4'], 't'];
+
+var_dump(findValue($a, $array));
 
 function findValue($value, $array)
 {
@@ -22,4 +25,4 @@ function findValue($value, $array)
     return false;
 }
 
-var_dump(findValue($find_value, $array));
+

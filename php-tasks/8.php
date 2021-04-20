@@ -8,8 +8,9 @@ $string = "wRIte a FUnction to TRanSform a STring";
 
 function firstLetterUppercase($str) {
     $result = explode(" ", $str);
-    for($i = 0; $i < sizeof($result); $i++) {
-        $result[$i] = strtolower($result[$i]);
+
+    foreach ($result as &$item) {
+        $item = strtolower($item);
     }
 
     $result[0] = ucfirst($result[0]);

@@ -16,7 +16,7 @@ $array = [1, 2, 3];
 
 $collection = Collection::make($array);
 
-var_dump($collection->count());
+var_dump($collection->map(function($item) {return $item * 2; })->count());
 
 class Collection
 {
@@ -34,12 +34,14 @@ class Collection
 
     public function filter($callback)
     {
-        return array_filter($this->array, $callback);
+        $this->array = array_filter($this->array, $callback);
+        return $this;
     }
 
     public function map($callback)
     {
-        return array_map($callback, $this->array);
+
+        return self::make(array_map($callback, $this->array));
     }
 
     public function values()

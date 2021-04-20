@@ -30,9 +30,17 @@ $context = ['title' => 'test', 'content' => 'contentik'];
 
 function my_stingf($html, array $context)
 {
+    //$html = preg_replace('/{{\$' . $key . '}}/', $item, $html);
+    $keys = [];
+    $values = [];
+
     foreach ($context as $key => $item) {
-        $html = preg_replace('/{{\$' . $key . '}}/', $item, $html);
+        $values [] = $item;
+        $keys [] = '/{{\$' . $key . '}}/';
     }
+
+    $html = preg_replace($keys, $values, $html);
+
     return $html;
 }
 
