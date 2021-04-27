@@ -4,7 +4,7 @@ include_once "DriverInterface.php";
 
 class DriverDB implements DriverInterface
 {
-    protected $link;
+    protected mysqli $link;
 
     private function __construct($server, $user, $pass, $table)
     {
@@ -20,7 +20,11 @@ class DriverDB implements DriverInterface
         return new static($server, $user, $pass, $table);
     }
 
-    public function get($key)
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public function get(string $key): mixed
     {
         $hashKey = md5($key);
         $stmt = $this->link->prepare("SELECT value FROM cache WHERE uuid=?");
@@ -29,7 +33,6 @@ class DriverDB implements DriverInterface
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc()['value'];
 
-
         if ($result !== false) {
             return unserialize($result);
         } else {
@@ -37,7 +40,12 @@ class DriverDB implements DriverInterface
         }
     }
 
-    public function set($key, $value)
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    public function set(string $key, mixed $value): void
     {
         $hashKey = md5($key);
         $serializeValue = serialize($value);
@@ -45,7 +53,7 @@ class DriverDB implements DriverInterface
         $stmt = $this->link->prepare("INSERT INTO cache (uuid, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value = ? ");
         $stmt->bind_param('sss', $hashKey, $serializeValue, $serializeValue);
 
-        return $stmt->execute();
+        $stmt->execute();
     }
 }
 

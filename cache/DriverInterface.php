@@ -11,7 +11,7 @@ interface DriverInterface
 
     /**
      * @param string $key
-     * @param mixed $value
+     * @param $value
      */
-    public function set(string $key, mixed $value): void;
+    public function set(string $key, $value): void;
 }

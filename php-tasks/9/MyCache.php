@@ -5,21 +5,27 @@ include_once "DriverMemory.php";
 include_once "DriverDB.php";
 
 $file = 'file.txt';
-$current = "John Smith";
+$current = 'fjgjgghbggg';
 
 $key = 'Italy';
 
-//MyCache::storage('file')->set($file, $current);
+MyCache::storage('file')->set($file, $current);
+//MyCache::storage('file');
 //var_dump(MyCache::storage('file')->set($file, $current));
 
-var_dump(MyCache::storage('db')->get('hashjhhh'));
+//var_dump(MyCache::storage('db')->get('hashjhhh'));
 
 
 class MyCache
 {
     protected $driver;
 
-    public static function storage($driver) {
+    /**
+     * @param $driver
+     * @return DriverDB|DriverFile
+     */
+    public static function storage($driver)
+    {
         switch ($driver) {
             case "memory":
                 var_dump('memory');

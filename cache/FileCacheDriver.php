@@ -2,8 +2,18 @@
 include_once "DriverInterface.php";
 
 
-class DriverFile implements DriverInterface
+class FileCacheDriver implements DriverInterface
 {
+    /**
+     * @var array
+     */
+    protected array $config = [];
+
+    public function __construct(array $config)
+    {
+        $this->loadConfig($config);
+    }
+
     /**
      * @param string $key
      * @return mixed
@@ -15,9 +25,9 @@ class DriverFile implements DriverInterface
 
     /**
      * @param string $key
-     * @param mixed $value
+     * @param $value
      */
-    public function set(string $key, mixed $value): void
+    public function set(string $key, $value): void
     {
         file_put_contents($this->getDirname($key), json_encode($value));
     }
@@ -32,5 +42,18 @@ class DriverFile implements DriverInterface
 
         @mkdir($uploadDir);
         return $uploadDir . DIRECTORY_SEPARATOR . md5($key);
+    }
+
+    /**
+     * @param array $config
+     * @throws CacheDriverConfigException
+     */
+    public function loadConfig(array $config)
+    {
+        try {
+            $this->config['path'] = $config['path'];
+        } catch (\Exception $exception) {
+            throw new CacheDriverConfigException($exception->getMessage());
+        }
     }
 }

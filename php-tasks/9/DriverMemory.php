@@ -4,29 +4,21 @@ include_once "DriverInterface.php";
 
 class DriverMemory implements DriverInterface
 {
-    protected $link;
-
-    private function __construct($server, $user, $pass, $table)
+    static array $storage = [];
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
+    public function set(string $key, mixed $value): void
     {
-        $this->link = new mysqli($server, $user, $pass, $table);
-
-        if ($this->link->connect_error) {
-            die('Could not connect: ' . $this->link->connect_error);
-        }
+        self::$storage[$key] = $value;
     }
-
-    public static function make($server, $user, $pass, $table)
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public function get(string $key): mixed
     {
-        return new static($server, $user, $pass, $table);
-    }
-
-    public function get($key)
-    {
-        return mysqli_query($this->link, "SELECT * FROM test WHERE `city=`".$key.";");
-    }
-
-    public function set($key, $value)
-    {
-        // TODO: Implement set() method.
+        return self::$storage[$key] ?? null;
     }
 }
