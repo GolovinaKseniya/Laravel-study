@@ -3,9 +3,13 @@
 
 class FileDBDriver
 {
-    public string $filename;
     public array $config;
-    public array $values;
+    public string $filename;
+
+    public array $decodedArrays;
+
+    public array $valuesToFind;
+    public array $findedValues;
 
     public function __construct($config)
     {
@@ -15,71 +19,133 @@ class FileDBDriver
 
     public function file($filename)
     {
-        $this->filename = $this->config['path'] . DIRECTORY_SEPARATOR . $filename . $this->config['extension'];
-        return $this;
-    }
-
-    public function find($array)
-    {
-        $this->get($this->filename);
-        var_dump($this->get($this->filename));
-    }
-
-    public function set(string $key, $value): void
-    {
-        file_put_contents($this->config['path'], json_encode($value));
-    }
-
-    public function recursiveSearch($findKey, $array, $result = [])
-    {
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $result = array_merge($result, $this->recursiveSearch($findKey, $value, $result = []));
-            } else {
-                if ($key === $findKey) {
-                    array_push($result, $value);
-                }
-            }
-        }
-
-        return $result;
-    }
-
-    public function get($filename)
-    {
         $this->filename = $this->config['path'] . DIRECTORY_SEPARATOR . $filename;
 
         $handle = fopen($this->filename, "r");
-        $i = 0;
-        $keyNumber = '';
-        $result
+        $tmpValues = [];
 
         if ($handle) {
             while (($line = fgets($handle)) !== false) {
-                if ($i === 0) {
-                    $keys = json_decode($line, true);
-                    $key = array_search('test', $keys);
-                    $keyNumber = $key;
-                } else {
-                    $values = json_decode($line, true);
-                    $j = 0;
-                    foreach ($values as $key => $value) {
-                        echo $key;
-                        if ($j === $i) {
-
-                        }
-                        $j++;
-                        //var_dump($value);
-                    }
-                }
-
-                $i++;
+                array_push($tmpValues, json_decode($line, true));
             }
 
-//            echo $keyNumber;
             fclose($handle);
         }
 
-        //return json_decode(file_get_contents($key));
+        $this->decodedArrays = $tmpValues;
+        return $this;
     }
+
+    public function update($array)
+    {
+        var_dump($this->decodedArrays);
+
+        foreach($this->decodedArrays as $decodedArray) {
+            foreach ($decodedArray as $key => $item) {
+               
+                if(in_array($key, $this->valuesToFind['slug'])) {
+                    if(in_array($item, $this->valuesToFind['value'])) {
+                        $item = 111;
+                        echo "<br>$item<br>";
+                    }
+                }
+            }
+        }
+
+        echo "<br><br><br>";
+
+        var_dump($this->decodedArrays);
+
+        $handle = fopen($this->filename, "w");
+
+//        foreach ($this->decodedArrays as $decodedArray) {
+            fwrite($handle, json_encode('test') . PHP_EOL);
+//        }
+        fclose($handle);
+        return $this;
+    }
+
+    public function append($value): void
+    {
+        $fp = fopen($this->filename, "a+");
+
+        fwrite($fp, json_encode($value) . PHP_EOL);
+
+        fclose($fp);
+    }
+
+    public function read($keys)
+    {
+        $resultValues = [];
+
+        if ($keys === "*") {
+            return $this->findedValues;
+        } else if (is_array($keys)) {
+            foreach ($this->findedValues as $findedValue) {
+                foreach ($findedValue as $key => $value) {
+                    if (in_array($key, $keys)) {
+                        $resultValues [$key] = $value;
+                    }
+                }
+            }
+        }
+
+        return $resultValues;
+    }
+
+
+    public function find(array $array)
+    {
+        $find = [
+            'slug' => [],
+            'symbol' => [],
+            'value' => []
+        ];
+
+        $findedValues = [];
+
+        foreach ($array as $value) {
+            array_push($find['slug'], $value[0]);
+
+            array_push($find['symbol'], $value[1]);
+
+            array_push($find['value'], $value[2]);
+        }
+
+        $this->valuesToFind = $find;
+
+        if (isset($this->decodedArrays)) {
+
+            foreach ($this->decodedArrays as $decodedArray) {
+                foreach ($decodedArray as $key => $value) {
+
+                    if (in_array($key, $find['slug'])) {
+                        if (in_array($value, $find['value'])) {
+                            array_push($findedValues, $decodedArray);
+                        }
+                    }
+                }
+            }
+            $this->findedValues = $findedValues;
+        }
+
+        return $this;
+    }
+
+//    public function get($filename)
+//    {
+//        $handle = fopen($this->filename, "r");
+//        $tmpValues = [];
+//
+//        if ($handle) {
+//            while (($line = fgets($handle)) !== false) {
+//                array_push($tmpValues, json_decode($line, true));
+//            }
+//
+//            fclose($handle);
+//        }
+//
+//        $this->decodedArrays = $tmpValues;
+//        return $this;
+//    }
 }

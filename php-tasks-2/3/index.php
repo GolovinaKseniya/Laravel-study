@@ -2,8 +2,8 @@
 include_once "FileDBDriver.php";
 
 $exampleArray = [
-    [1 => 'test', 'test' => '1234', 'trrt' => 12344],
-    ['trr' => 'ffff', 'test' => 'ggg', [1 => 'gdfg', 'test' => 555], 'ghd23' => '1234', 'ffff' => 12344]
+    ['id' => 'test', 'title' => '1234', 'name' => 12344],
+    ['id' => 'ffff', 'title' => 'ggg', 'name' => 5888, 'age' => '22', 'city' => 'London']
 ];
 
 $config = [
@@ -13,6 +13,19 @@ $config = [
 
 $fd = new FileDBDriver($config);
 
-//var_dump($fd->file('test'));
+//$db->file('users')
+//    ->find([['name', '=', 'test']])
+//    ->update(['name' => 'new_test'])
 
-$fd->get('test');
+$fd->file('test')
+    ->find([['name', '=', 'fdff']])
+    ->update(['name' => 'TTTTTT']);
+
+
+//$fd
+//    ->file('test')
+//    ->append(['id' => '2', 'name' => 'fdff']);
+
+//$fd->file('test')
+//    ->find([['id', '=',  1], ['id', '=', 3]]);
+//    ->read(['id', 'name']);

@@ -11,7 +11,7 @@ return [
             'password' => '123456'
         ],
         'filesystem' => [
-            'path' => 'test.txt'
+            'path' => 'test'
         ]
     ]
 ];

@@ -3,7 +3,7 @@
 include_once "Cache.php";
 
 //filesystem
-//$filesystem = Cache::storage('file', ['path' => 'test.txt']);
+//$filesystem = Cache::storage('file', ['path' => 'test']);
 //$filesystem->set('testg.txt', 'hlfgghghh');
 
 $database = Cache::storage('database', [
