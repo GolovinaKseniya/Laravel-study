@@ -18,14 +18,19 @@ $fd = new FileDBDriver($config);
 //    ->update(['name' => 'new_test'])
 
 $fd->file('test')
-    ->find([['name', '=', 'fdff']])
-    ->update(['name' => 'TTTTTT']);
+    ->find(
+        [['name', '=', 'mmmmm'], ['id', '<', 20]],
+        [['id', '=', 3], ['id', '=', 2]]
+    )
+    ->update(['name' => 'TTTTTT'])
+//    ->read(['id', 'name'])
+;
+//    ->update(['name' => 'TTTTTT']);
 
-
-//$fd
-//    ->file('test')
-//    ->append(['id' => '2', 'name' => 'fdff']);
 
 //$fd->file('test')
 //    ->find([['id', '=',  1], ['id', '=', 3]]);
 //    ->read(['id', 'name']);
+
+//echo ((1 && 1 && 1) || 0 || 0) ? 'true' : 'false';
+

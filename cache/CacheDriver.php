@@ -8,7 +8,7 @@ class CacheDriver
     /**
      * @param string $type
      * @return DriverInterface
-     * @throws CacheDriverException
+     * @throws MYSQLDBException
      */
     public static function factory(string $type): DriverInterface
     {
@@ -21,11 +21,7 @@ class CacheDriver
                 return new DatabaseCacheDriver(self::$drivers['drivers'][$type]);
         }
 
-        throw new CacheDriverException("Cannot get driver: $type");
-    }
-
-    public function createFileDriver() : FileCacheDriver {
-        return FileDriverFactory()
+        throw new MYSQLDBException("Cannot get driver: $type");
     }
 
     public static function load($configPath)

@@ -3,10 +3,7 @@
 
 class MySQLBDDriver
 {
-    /**
-     * @var PDO
-     */
-    public PDO $connection;
+    public $connection;
 
     /**
      * MySQLBDDriver constructor.
@@ -19,7 +16,7 @@ class MySQLBDDriver
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             print "Error!: " . $e->getMessage() . "<br/>";
-            die();
+
         }
     }
 

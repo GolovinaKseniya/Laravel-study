@@ -2,5 +2,5 @@
 
 interface DriverFactory
 {
-    public function createDriver(): DriverInterface;
+    public function createDriver(array $config): DriverInterface;
 }

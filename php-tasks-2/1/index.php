@@ -3,7 +3,7 @@ include_once "MySQLBDDriver.php";
 
 $config = [
     'db' => 'mysql:host=localhost;dbname=test',
-    'user' => 'root5',
+    'user' => 'root',
     'pass' => '123456'
 ];
 
