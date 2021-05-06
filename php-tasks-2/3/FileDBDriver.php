@@ -42,19 +42,38 @@ class FileDBDriver
 
     public function update($array)
     {
-        var_dump($this->searchResult);
+//        foreach ($this->searchResult as &$decodedArray) {
+//            foreach ($decodedArray as $key => &$item) {
+//                if($key === key($array)){
+//                    $item = $array[key($array)];
+//                }
+//            }
+//        }
+//        $this->decodedArrays = array_replace($this->decodedArrays, $this->searchResult);
 
+        $result = [];
 
-        foreach ($this->decodedArrays as $decodedArray) {
-            foreach ($decodedArray as $key => $item) {
+        function replace($n, $key, $value) {
+            echo($key);
+            foreach($n as $key => &$item) {
 
+//                if($key === key($array)) {
+//                    var_dump($array[key($array)]);
+//                    $item = $array[key($array)];
+//                }
             }
         }
 
+        $result = array_map('replace', $this->decodedArrays, key($array), $array);
 
-//        foreach ($this->decodedArrays as $decodedArray) {
-//            file_put_contents($this->filename, json_encode($decodedArray) . PHP_EOL);
+//        var_dump($result);
+
+//        foreach ($this->decodedArrays as $element) {
+//            $result .= json_encode($element) . PHP_EOL;
 //        }
+//
+//        file_put_contents($this->filename, $result);
+
         return $this;
     }
 
@@ -93,7 +112,6 @@ class FileDBDriver
         foreach ($conditions as $ckey => $condition) {
             if ($ckey === "and") {
                 $str = 'return (';
-
                 foreach ($condition as $ikey => $item) {
                     if ($ikey === (count($condition) - 1)) {
                         $str .= ($this->checkSign($item[1], $value, $item[2])) ? 1 : 0;
@@ -114,7 +132,7 @@ class FileDBDriver
         return eval($str . ';');
     }
 
-    public function find(array $and, array $or)
+    public function find(array $and, array $or = [])
     {
         $this->searchTerms['and'] = $and;
         $this->searchTerms['or'] = $or;
@@ -123,7 +141,9 @@ class FileDBDriver
 
         foreach ($this->decodedArrays as $decodedArray) {
             foreach ($decodedArray as $key => $item) {
-                if ($this->check($this->searchTerms, $key, $item)) {
+                if ($and[0][0] === 1 && $and[0][2] === 1) {
+                    array_push($result, $decodedArray);
+                } else if ($this->check($this->searchTerms, $key, $item)) {
                     array_push($result, $decodedArray);
                     break;
                 }

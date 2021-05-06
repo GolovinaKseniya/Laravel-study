@@ -9,8 +9,8 @@ class FileDBBuilder
         $this->fd = $fd;
     }
 
-    public function get() {
-        $this->fd->find()
+    public function get($value = "*") {
+        $this->fd->find();
     }
 
     public function where()
