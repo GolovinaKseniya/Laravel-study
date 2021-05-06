@@ -42,37 +42,21 @@ class FileDBDriver
 
     public function update($array)
     {
-//        foreach ($this->searchResult as &$decodedArray) {
-//            foreach ($decodedArray as $key => &$item) {
-//                if($key === key($array)){
-//                    $item = $array[key($array)];
-//                }
-//            }
-//        }
-//        $this->decodedArrays = array_replace($this->decodedArrays, $this->searchResult);
 
-        $result = [];
-
-        function replace($n, $key, $value) {
-            echo($key);
-            foreach($n as $key => &$item) {
-
-//                if($key === key($array)) {
-//                    var_dump($array[key($array)]);
-//                    $item = $array[key($array)];
-//                }
+        foreach ($this->decodedArrays as $key => &$decodedArray) {
+            if(in_array($decodedArray, $this->searchResult)) {
+                $decodedArray[key($array)] = $array[key($array)];
             }
         }
+        var_dump($this->decodedArrays);
 
-        $result = array_map('replace', $this->decodedArrays, key($array), $array);
 
-//        var_dump($result);
+        $result = "";
+        foreach ($this->decodedArrays as $element) {
+            $result .= json_encode($element) . PHP_EOL;
+        }
 
-//        foreach ($this->decodedArrays as $element) {
-//            $result .= json_encode($element) . PHP_EOL;
-//        }
-//
-//        file_put_contents($this->filename, $result);
+        file_put_contents($this->filename, $result);
 
         return $this;
     }
