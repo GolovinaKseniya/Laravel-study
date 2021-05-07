@@ -1,0 +1,18 @@
+{
+    "name": "dev/php-tasks-2",
+    "authors": [
+        {
+            "name": "Kseniya Golovina",
+            "email": "kseniya.golovina@devit-team.com"
+        }
+    ],
+    "require": {},
+    "description": "",
+    "autoload": {
+        "psr-4": {
+            "MySQLDBDriver\\": "1",
+            "MySQLDBBuilder\\": "2",
+            "FileDB\\": "3"
+        }
+    }
+}

@@ -1,4 +1,5 @@
 <?php
+namespace FileDB;
 
 
 class FileDBDriver
@@ -7,9 +8,6 @@ class FileDBDriver
     public string $filename;
 
     public array $decodedArrays;
-
-//    public array $valuesToFind;
-//    public array $findedValues;
 
     private array $searchTerms;
     private array $searchResult;
@@ -42,14 +40,13 @@ class FileDBDriver
 
     public function update($array)
     {
-
+        $i = 0;
         foreach ($this->decodedArrays as $key => &$decodedArray) {
             if(in_array($decodedArray, $this->searchResult)) {
                 $decodedArray[key($array)] = $array[key($array)];
+                $i++;
             }
         }
-        var_dump($this->decodedArrays);
-
 
         $result = "";
         foreach ($this->decodedArrays as $element) {
@@ -91,29 +88,25 @@ class FileDBDriver
         return $resultValues;
     }
 
-    private function check(array $conditions, string $key, string $value)
+    public function delete()
     {
-        foreach ($conditions as $ckey => $condition) {
-            if ($ckey === "and") {
-                $str = 'return (';
-                foreach ($condition as $ikey => $item) {
-                    if ($ikey === (count($condition) - 1)) {
-                        $str .= ($this->checkSign($item[1], $value, $item[2])) ? 1 : 0;
-                        $str .= ")";
-                    } else {
-                        $str .= ($this->checkSign($item[1], $value, $item[2])) ? 1 : 0;
-                        $str .= " && ";
-                    }
-                }
-            } else if ($ckey === "or") {
-                foreach ($condition as $item) {
-                    $str .= " || ";
-                    $str .= ($this->checkSign($item[1], $value, $item[2])) ? 1 : 0;
-                }
+        $i = 0;
+
+        foreach ($this->decodedArrays as $key => $decodedArray) {
+            if(in_array($decodedArray, $this->searchResult)) {
+                unset($this->decodedArrays[$key]);
+                $i++;
             }
         }
 
-        return eval($str . ';');
+        $result = "";
+        foreach ($this->decodedArrays as $element) {
+            $result .= json_encode($element) . PHP_EOL;
+        }
+
+        file_put_contents($this->filename, $result);
+
+        return $this;
     }
 
     public function find(array $and, array $or = [])
@@ -166,5 +159,30 @@ class FileDBDriver
             default:
                 return false;
         }
+    }
+
+    private function check(array $conditions, string $key, string $value)
+    {
+        foreach ($conditions as $ckey => $condition) {
+            if ($ckey === "and") {
+                $str = 'return (';
+                foreach ($condition as $ikey => $item) {
+                    if ($ikey === (count($condition) - 1)) {
+                        $str .= ($this->checkSign($item[1], $value, $item[2])) ? 1 : 0;
+                        $str .= ")";
+                    } else {
+                        $str .= ($this->checkSign($item[1], $value, $item[2])) ? 1 : 0;
+                        $str .= " && ";
+                    }
+                }
+            } else if ($ckey === "or") {
+                foreach ($condition as $item) {
+                    $str .= " || ";
+                    $str .= ($this->checkSign($item[1], $value, $item[2])) ? 1 : 0;
+                }
+            }
+        }
+
+        return eval($str . ';');
     }
 }

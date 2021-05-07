@@ -1,6 +1,6 @@
 <?php
-include_once "FileDBDriver.php";
-include_once "FileDBBuilder.php";
+require_once '../vendor/autoload.php';
+
 
 $exampleArray = [
     ['id' => 'test', 'title' => '1234', 'name' => 12344],
@@ -12,28 +12,24 @@ $config = [
     'path' => 'storage'
 ];
 
-$fd = new FileDBDriver($config);
-//$queryBuilder = new FileDBBuilder($fd);
+$fd = new FileDB\FileDBDriver($config);
+$queryBuilder = new FileDB\FileDBBuilder($fd);
 //$queryBuilder
-//    ->where(1, '=', 1)
-//    ->where(1, '=', 1)
+//    ->where('id', '=', 1)
 //    ->orWhere('id', '=', 5)
-//    ->orWhere('test', '=', 5)
-//    ->select(['id', 'name'])
-//    ->get();
+//    ->update(['name' => 'new_test'])
+//    ->delete()
+;
+
+$fd->file('test2')
+    ->find([['id', '=',  1]])
+    ->update(['name' => 'new_test'])
+;
+
 
 //$db->file('users')
 //    ->find([['name', '=', 'test']])
 //    ->update(['name' => 'new_test'])
-
-$fd->file('test')
-    ->find(
-        [['name', '=', 'rrrrr']], [['id', '=', 5]]
-    )
-    ->update(['name' => 'test123'])
-    ->read(['id', 'name'])
-;
-//    ->update(['name' => 'TTTTTT']);
 
 
 //$fd->file('test')

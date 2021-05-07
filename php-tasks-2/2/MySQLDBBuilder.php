@@ -1,4 +1,5 @@
 <?php
+namespace MySQLDBBuilder;
 
 
 class MySQLDBBuilder

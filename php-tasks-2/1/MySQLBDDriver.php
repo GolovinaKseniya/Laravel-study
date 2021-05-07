@@ -1,5 +1,6 @@
 <?php
-
+namespace MySQLDBDriver;
+use PDO;
 
 class MySQLBDDriver
 {
@@ -12,7 +13,7 @@ class MySQLBDDriver
     public function __construct(array $config)
     {
         try {
-            $this->connection = new PDO($config['db'], $config['user'], $config['pass']);
+            $this->connection = new \PDO($config['db'], $config['user'], $config['pass']);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             print "Error!: " . $e->getMessage() . "<br/>";

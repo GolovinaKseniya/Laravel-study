@@ -1,7 +1,7 @@
 <?php
+namespace FileDB;
 
-
-class FileDBBuilder
+class FileDBBuilder implements DBBuilderInterface
 {
     public $fd;
 
@@ -23,24 +23,24 @@ class FileDBBuilder
         return $this;
     }
 
-    public function get()
+    public function get(): array
     {
-        $selected = isset($this->selectValues) ? $this->selectValues : "*";
+        $selected = $this->selectValues ? $this->selectValues : "*";
 
         if (isset($this->conditions['and']) && isset($this->conditions['or'])) {
-            $this->fd
+            return $this->fd
                 ->file('test')
                 ->find($this->conditions['and'], $this->conditions['or'])
                 ->read($selected);
         } else {
-            $this->fd
+            return $this->fd
                 ->file('test')
                 ->find([[1, '=', 1]])
                 ->read($selected);
         }
     }
 
-    public function where($key, $symbol, $value)
+    public function where($key, $symbol, $value): static
     {
         $tmp = [$key, $symbol, $value];
         array_push($this->conditions['and'], $tmp);
@@ -54,8 +54,27 @@ class FileDBBuilder
         return $this;
     }
 
-    public function insert()
+    public function insert($array)
     {
+        $this->fd
+            ->file('test')
+            ->insert($array);
+    }
 
+    public function update($array)
+    {
+        var_dump($this->conditions['and'], $this->conditions['or']);
+        return $this->fd
+            ->file('test')
+            ->find($this->conditions['and'], $this->conditions['or'])
+            ->update($array);
+    }
+
+    public function delete()
+    {
+        $this->fd
+            ->file('test')
+            ->find($this->conditions['and'], $this->conditions['or'])
+            ->delete();
     }
 }

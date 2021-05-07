@@ -1,17 +1,16 @@
 <?php
 
-include_once "MySQLDBDriver.php";
-include_once "MySQLDBBuilder.php";
+require_once '../vendor/autoload.php';
 
 $config = [
     'db' => 'mysql:host=localhost;dbname=test',
-    'user' => 'root5',
+    'user' => 'root',
     'pass' => '123456'
 ];
 
-$db = new MySQLDBDriver($config);
+$db = new MySQLDBBuilder\MySQLDBDriver($config);
 
-$queryBuilder = new MySQLDBBuilder($db, 'test');
+$queryBuilder = new MySQLDBBuilder\MySQLDBBuilder($db, 'test');
 
 
 //var_dump($queryBuilder->select());

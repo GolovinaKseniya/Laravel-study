@@ -1,5 +1,7 @@
 <?php
-include_once "../Exceptions/MYSQLDBException.php";
+namespace MySQLDBBuilder;
+use PDO;
+
 
 class MySQLDBDriver
 {
@@ -8,17 +10,11 @@ class MySQLDBDriver
     /**
      * MySQLBDDriver constructor.
      * @param array $config
-     * @throws MYSQLDBException
      */
     public function __construct(array $config)
     {
-//        try {
             $this->connection = new PDO($config['db'], $config['user'], $config['pass']);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
-            var_dump($this->connection->errorCode());
-//        } catch (PDOException $e) {
-//            throw new MYSQLDBException('TEST');
-//        }
     }
 
     /**

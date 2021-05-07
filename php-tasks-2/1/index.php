@@ -1,5 +1,5 @@
 <?php
-include_once "MySQLBDDriver.php";
+require_once '../vendor/autoload.php';
 
 $config = [
     'db' => 'mysql:host=localhost;dbname=test',
@@ -7,7 +7,7 @@ $config = [
     'pass' => '123456'
 ];
 
-$db = new MySQLBDDriver($config);
+$db = new MySQLDBDriver\MySQLBDDriver($config);
 
 $db->select("SELECT * FROM `test`");
 $db->insert("INSERT INTO `test` (id, city) VALUES (6, 'Mexico11'), (7, 'Mexico22')");
