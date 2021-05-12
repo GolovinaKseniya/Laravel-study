@@ -1,5 +1,7 @@
 <?php
+
 namespace MySQLDBBuilder;
+
 use PDO;
 
 
@@ -13,8 +15,8 @@ class MySQLDBDriver
      */
     public function __construct(array $config)
     {
-            $this->connection = new PDO($config['db'], $config['user'], $config['pass']);
-            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
+        $this->connection = new PDO($config['db'], $config['user'], $config['pass']);
+        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
     }
 
     /**

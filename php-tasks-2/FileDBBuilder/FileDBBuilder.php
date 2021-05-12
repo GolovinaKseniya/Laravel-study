@@ -10,19 +10,30 @@ class FileDBBuilder implements DBBuilderInterface
         'or' => []
     ];
 
-    public array $selectValues;
+    public $selectValues;
 
+    /**
+     * FileDBBuilder constructor.
+     * @param $fd
+     */
     public function __construct($fd)
     {
         $this->fd = $fd;
     }
 
-    public function select($selectValues = "*")
+    /**
+     * @param string $values
+     * @return $this
+     */
+    public function select($values = "*"): static
     {
-        $this->selectValues = $selectValues;
+        $this->selectValues = $values;
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function get(): array
     {
         $selected = $this->selectValues ? $this->selectValues : "*";
@@ -40,20 +51,35 @@ class FileDBBuilder implements DBBuilderInterface
         }
     }
 
-    public function where($key, $symbol, $value): static
+    /**
+     * @param string $key
+     * @param string $symbol
+     * @param string $value
+     * @return $this
+     */
+    public function where(string $key, string $symbol, string $value): static
     {
         $tmp = [$key, $symbol, $value];
         array_push($this->conditions['and'], $tmp);
         return $this;
     }
 
-    public function orWhere($key, $symbol, $value)
+    /**
+     * @param string $key
+     * @param string $symbol
+     * @param string $value
+     * @return $this
+     */
+    public function orWhere(string $key, string $symbol, string $value): static
     {
         $tmp = [$key, $symbol, $value];
         array_push($this->conditions['or'], $tmp);
         return $this;
     }
 
+    /**
+     * @param array $array
+     */
     public function insert($array)
     {
         $this->fd
@@ -61,6 +87,10 @@ class FileDBBuilder implements DBBuilderInterface
             ->insert($array);
     }
 
+    /**
+     * @param array $array
+     * @return mixed
+     */
     public function update($array)
     {
         var_dump($this->conditions['and'], $this->conditions['or']);

@@ -1,8 +1,9 @@
 <?php
 namespace MySQLDBBuilder;
 
+use FileDB\DBBuilderInterface;
 
-class MySQLDBBuilder
+class MySQLDBBuilder implements DBBuilderInterface
 {
     public array $query;
     protected string $table;
@@ -16,7 +17,7 @@ class MySQLDBBuilder
      * @param $table
      * @param array $query
      */
-    public function __construct($connection, $table, $query = [])
+    public function __construct($connection, $table, array $query = [])
     {
         $this->query = $query;
         $this->table = $table;
@@ -43,33 +44,33 @@ class MySQLDBBuilder
     }
 
     /**
-     * @param int $columnName
-     * @param int $sign
-     * @param int $findValue
+     * @param int $key
+     * @param int $symbol
+     * @param int $value
      * @return $this|string
      */
-    public function where($columnName = 0, $sign = 0, $findValue = 0)
+    public function where($key = 0, $symbol = 0, $value = 0)
     {
-        if ($columnName === 0 && $sign === 0 && $findValue === 0) {
+        if ($key === 0 && $symbol === 0 && $value === 0) {
             return '';
         }
 
-        $queryPart = sprintf("WHERE %s %s '%s'", $columnName, $sign, $findValue);
+        $queryPart = sprintf("WHERE %s %s '%s'", $key, $symbol, $value);
         $this->query['where'] = $queryPart;
 
         return $this;
     }
 
     /**
-     * @param int $columnName
-     * @param int $sign
-     * @param int $findValue
+     * @param int $key
+     * @param int $symbol
+     * @param int $value
      * @return $this
      */
-    public function orWhere($columnName = 0, $sign = 0, $findValue = 0)
+    public function orWhere($key = 0, $symbol = 0, $value = 0)
     {
-        if (isset($this->query['where']) && ($columnName !== 0 && $sign !== 0 && $findValue !== 0)) {
-            $queryPart = sprintf(" OR %s %s '%s'", $columnName, $sign, $findValue);
+        if (isset($this->query['where']) && ($key !== 0 && $symbol !== 0 && $value !== 0)) {
+            $queryPart = sprintf(" OR %s %s '%s'", $key, $symbol, $value);
             $this->query['orWhere'] = $queryPart;
             return $this;
         } else {
