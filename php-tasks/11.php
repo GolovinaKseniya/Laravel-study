@@ -6,7 +6,7 @@
     $collection = Collection::make($array);
     $newArray =
         $collection
-            ->filter(function($elem) {retun time() & 2;})
+            ->filter(function($elem) {retun time() & MySQLDBBuilder;})
             ->map(function($item) {retun $item['id']})
             ->values();
     $collection->count()

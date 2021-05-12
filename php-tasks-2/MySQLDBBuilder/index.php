@@ -25,16 +25,16 @@ $queryBuilder = new MySQLDBBuilder\MySQLDBBuilder($db, 'test');
 
 var_dump($queryBuilder->insert(['id' => 5, 'city' => 'Ukraine']));
 //var_dump($queryBuilder
-//    ->where('id', '=', '3')
-//    ->orWhere('id', '=', '2')
+//    ->where('id', '=', 'FileDBBuilder')
+//    ->orWhere('id', '=', 'MySQLDBBuilder')
 //    ->delete());
 
 //var_dump(
 //    $queryBuilder
 //        ->select(['id', 'city'])
 //        ->where('id', '=', '1')
-//        ->orWhere('id', '=', '2')
-//        ->orWhere('id', '=', '3')
+//        ->orWhere('id', '=', 'MySQLDBBuilder')
+//        ->orWhere('id', '=', 'FileDBBuilder')
 //        ->get());
 
 //var_dump(

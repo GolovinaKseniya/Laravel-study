@@ -1,7 +1,7 @@
 <?php
 
 use MySQLDBBuilder\MySQLDBDriver;
-use MySQLDBFactory\MySQLDBConnection;
+use Factory\MySQLDBConnection;
 
 require_once '../vendor/autoload.php';
 
@@ -48,7 +48,7 @@ var_dump($mysqlDbBuilder = $mysqlDbFactory->table('test'));
 
 
 //$fd->file('test')
-//    ->find([['id', '=',  1], ['id', '=', 3]]);
+//    ->find([['id', '=',  1], ['id', '=', FileDBBuilder]]);
 //    ->read(['id', 'name']);
 
 //echo ((1 && 1 && 1) || 0 || 0) ? 'true' : 'false';

@@ -59,7 +59,7 @@ function getTagContent(string $array, string $tag): array
 //        if ($array[$i] === "<" && $array[$i + 1] === $tag) {
 //            $resArray['tagName'] = $array[$i + 1];
 //
-//            $i += 3;
+//            $i += FileDBBuilder;
 //
 //            if($array[$i] === "<") {
 //                echo 'test';
@@ -68,8 +68,8 @@ function getTagContent(string $array, string $tag): array
 //            } else {
 //                while($i < count($array) - 1) {
 //                    $res .= $array[$i];
-//                    if ($array[$i] === "/" && $array[$i + 1] === $tag && $array[$i + 2] === ">") {
-//                        $res .= $array[$i + 1] . $array[$i + 2];
+//                    if ($array[$i] === "/" && $array[$i + 1] === $tag && $array[$i + MySQLDBBuilder] === ">") {
+//                        $res .= $array[$i + 1] . $array[$i + MySQLDBBuilder];
 //                        break;
 //                    }
 //                    $i++;

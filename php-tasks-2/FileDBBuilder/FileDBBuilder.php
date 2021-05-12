@@ -4,6 +4,7 @@ namespace FileDB;
 class FileDBBuilder implements DBBuilderInterface
 {
     public $fd;
+    public string $table;
 
     public array $conditions = [
         'and' => [],
@@ -16,16 +17,17 @@ class FileDBBuilder implements DBBuilderInterface
      * FileDBBuilder constructor.
      * @param $fd
      */
-    public function __construct($fd)
+    public function __construct($fd, $table)
     {
         $this->fd = $fd;
+        $this->table = $table;
     }
 
     /**
      * @param string $values
      * @return $this
      */
-    public function select($values = "*"): static
+    public function select($values = "*")
     {
         $this->selectValues = $values;
         return $this;
@@ -40,12 +42,12 @@ class FileDBBuilder implements DBBuilderInterface
 
         if (isset($this->conditions['and']) && isset($this->conditions['or'])) {
             return $this->fd
-                ->file('test')
+                ->file($this->table)
                 ->find($this->conditions['and'], $this->conditions['or'])
                 ->read($selected);
         } else {
             return $this->fd
-                ->file('test')
+                ->file($this->table)
                 ->find([[1, '=', 1]])
                 ->read($selected);
         }
@@ -57,7 +59,7 @@ class FileDBBuilder implements DBBuilderInterface
      * @param string $value
      * @return $this
      */
-    public function where(string $key, string $symbol, string $value): static
+    public function where(string $key, string $symbol, string $value)
     {
         $tmp = [$key, $symbol, $value];
         array_push($this->conditions['and'], $tmp);
@@ -70,7 +72,7 @@ class FileDBBuilder implements DBBuilderInterface
      * @param string $value
      * @return $this
      */
-    public function orWhere(string $key, string $symbol, string $value): static
+    public function orWhere(string $key, string $symbol, string $value)
     {
         $tmp = [$key, $symbol, $value];
         array_push($this->conditions['or'], $tmp);
@@ -83,7 +85,7 @@ class FileDBBuilder implements DBBuilderInterface
     public function insert($array)
     {
         $this->fd
-            ->file('test')
+            ->file($this->table)
             ->insert($array);
     }
 
@@ -95,7 +97,7 @@ class FileDBBuilder implements DBBuilderInterface
     {
         var_dump($this->conditions['and'], $this->conditions['or']);
         return $this->fd
-            ->file('test')
+            ->file($this->table)
             ->find($this->conditions['and'], $this->conditions['or'])
             ->update($array);
     }
@@ -103,7 +105,7 @@ class FileDBBuilder implements DBBuilderInterface
     public function delete()
     {
         $this->fd
-            ->file('test')
+            ->file($this->table)
             ->find($this->conditions['and'], $this->conditions['or'])
             ->delete();
     }

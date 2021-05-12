@@ -10,9 +10,10 @@
     "description": "",
     "autoload": {
         "psr-4": {
-            "MySQLDBDriver\\": "1",
-            "MySQLDBBuilder\\": "2",
-            "FileDB\\": "3"
+            "MySQLDBBuilder\\": "MySQLDBBuilder",
+            "FileDB\\": "FileDBBuilder",
+            "Factory\\": "Factory",
+            "StaticFactory\\" : "StaticFactory"
         }
     }
 }
