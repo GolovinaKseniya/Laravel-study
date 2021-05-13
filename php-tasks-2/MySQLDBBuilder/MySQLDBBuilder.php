@@ -6,6 +6,7 @@ use FileDB\DBBuilderInterface;
 class MySQLDBBuilder implements DBBuilderInterface
 {
     public array $query;
+    public string $where;
     protected string $table;
     protected MySQLDBDriver $connection;
 
@@ -28,7 +29,7 @@ class MySQLDBBuilder implements DBBuilderInterface
      * @param $values
      * @return $this
      */
-    public function select($values)
+    public function select($values = '*')
     {
         if (is_array($values)) {
             foreach ($values as $value) {
@@ -51,13 +52,29 @@ class MySQLDBBuilder implements DBBuilderInterface
      */
     public function where($key = 0, $symbol = 0, $value = 0)
     {
-        if ($key === 0 && $symbol === 0 && $value === 0) {
-            return '';
-        }
+//        $this->query['where'] = [$key, $symbol, $value];
+//
+//        if(isset($this->query['where'])) {
+//            array_push($this->query['where'], [$key, $symbol, $value]);
+//        }
 
-        $queryPart = sprintf("WHERE %s %s '%s'", $key, $symbol, $value);
-        $this->query['where'] = $queryPart;
+        var_dump($this->query);
 
+//        if(isset($this->query['where'])) {
+//            $str = "WHERE ";
+//            array_push($this->query['where'], [$key, $symbol, $value]);
+//        } else {
+//            $str = " AND ";
+//        }
+//
+//        if ($key === 0 && $symbol === 0 && $value === 0) {
+//            return '';
+//        }
+//
+//        $queryPart = sprintf("%s %s '%s'", $key, $symbol, $value);
+//        $this->query['where'] .= $queryPart;
+//
+//        $this->where .= $queryPart;
         return $this;
     }
 
@@ -69,15 +86,16 @@ class MySQLDBBuilder implements DBBuilderInterface
      */
     public function orWhere($key = 0, $symbol = 0, $value = 0)
     {
+        array_push($this->query['orWhere'], [$key, $symbol, $value]);
+
         if (isset($this->query['where']) && ($key !== 0 && $symbol !== 0 && $value !== 0)) {
             $queryPart = sprintf(" OR %s %s '%s'", $key, $symbol, $value);
-            $this->query['orWhere'] = $queryPart;
+            $this->query['orWhere'] .= $queryPart;
             return $this;
         } else {
             $this->query['orWhere'] = '';
             return $this;
         }
-
     }
 
     /**
@@ -101,7 +119,7 @@ class MySQLDBBuilder implements DBBuilderInterface
         }
 
         $query = trim($query);
-
+//        var_dump($this->query);
         return $this->connection->select($query);
     }
 

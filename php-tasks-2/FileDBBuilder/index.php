@@ -22,10 +22,25 @@ $config = [
     'pass' => '123456'
 ];
 
-$fd = new MySQLDBDriver($config);
+//$fd = new \FileDB\FileDBDriver($config);
+//
+//$fdBuilder = new \FileDB\FileDBBuilder($fd, 'test');
+//
+//$fd
+//    ->file('test')
+//    ->find(
+//    [['id', '=', 1], ['title', '=', 'title111'], ['name', '=', 'test']],
+//    [['title', '=', 'title555'], ['title', '=', 'title333']]
+//    )
+//    ->delete()
+//;
 
-$mysqlDbFactory = new MySQLDBConnection($fd);
-var_dump($mysqlDbBuilder = $mysqlDbFactory->table('test'));
+$fd = new MySQLDBDriver($config);
+$fdBuilder = new \MySQLDBBuilder\MySQLDBBuilder()
+
+
+//$mysqlDbFactory = new MySQLDBConnection($fd);
+//var_dump($mysqlDbBuilder = $mysqlDbFactory->table('test'));
 
 //$fd = new FileDB\FileDBDriver($config);
 //$queryBuilder = new FileDB\FileDBBuilder($fd);

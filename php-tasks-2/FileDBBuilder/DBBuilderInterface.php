@@ -1,4 +1,5 @@
 <?php
+
 namespace FileDB;
 
 interface DBBuilderInterface

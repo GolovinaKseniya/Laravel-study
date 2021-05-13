@@ -13,17 +13,17 @@ $db = new MySQLDBBuilder\MySQLDBDriver($config);
 $queryBuilder = new MySQLDBBuilder\MySQLDBBuilder($db, 'test');
 
 
-//var_dump($queryBuilder->select());
-//var_dump($queryBuilder->where('name', '=', 'test'));
-//var_dump(
-//    $queryBuilder
-//    ->where('city', '=', 'Japan')
+var_dump(
+    $queryBuilder
+    ->where('city', '=', 'Ukraine')
+    ->where('id', '=', 4)
 //    ->orWhere('city', '=', 'Italy')
-//    ->select()
-//    ->get()
-//);
+//    ->orWhere('city', '=', 'Japan')
+    ->select()
+    ->get()
+);
 
-var_dump($queryBuilder->insert(['id' => 5, 'city' => 'Ukraine']));
+//var_dump($queryBuilder->insert(['id' => 5, 'city' => 'Ukraine']));
 //var_dump($queryBuilder
 //    ->where('id', '=', 'FileDBBuilder')
 //    ->orWhere('id', '=', 'MySQLDBBuilder')

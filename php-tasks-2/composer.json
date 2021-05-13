@@ -13,7 +13,8 @@
             "MySQLDBBuilder\\": "MySQLDBBuilder",
             "FileDB\\": "FileDBBuilder",
             "Factory\\": "Factory",
-            "StaticFactory\\" : "StaticFactory"
+            "StaticFactory\\" : "StaticFactory",
+            "Facade\\": "Facade"
         }
     }
 }
