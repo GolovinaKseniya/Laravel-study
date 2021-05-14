@@ -95,12 +95,12 @@ class FileDBBuilder implements DBBuilderInterface
      */
     public function update($array)
     {
-        var_dump($this->conditions['and'], $this->conditions['or']);
         return $this->fd
             ->file($this->table)
             ->find($this->conditions['and'], $this->conditions['or'])
             ->update($array);
     }
+
 
     public function delete()
     {

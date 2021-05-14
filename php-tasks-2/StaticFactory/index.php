@@ -8,3 +8,6 @@ $config = include_once "../config/config.php";
 $mysqlDBFactory = DBFactory::make($config['mysql']);
 
 $mysqlDBFactory->table('test');
+
+
+

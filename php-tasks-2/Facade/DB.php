@@ -3,28 +3,24 @@
 namespace Facade;
 
 use FileDB\DBBuilderInterface;
+use MySQLDBBuilder\MySQLDBBuilder;
 use StaticFactory\DBFactory;
 
 class DB
 {
-    public static array $config;
-    public string $table;
-
-    public function config()
+    public function table()
     {
-        $this->config = include_once "../config/config.php";
+
     }
 
-    public static function connection(string $type)
+    public static function config($type)
     {
-        $config = include_once "../config/config.php";
-
-        return DBFactory::make($type);
+        $config = include "../config/config.php";
+        return $config[$type];
     }
 
-    public function table($table)
+    public static function connection($type = 'mysql')
     {
-        $this->table = $table;
-//        return DBBuilderInterface::class;
+        return DBFactory::make(self::config($type));
     }
 }

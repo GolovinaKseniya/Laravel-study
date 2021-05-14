@@ -3,4 +3,9 @@ require_once '../vendor/autoload.php';
 
 use Facade\DB;
 
-var_dump(DB::connection('mysql'));
+
+$test = new DB();
+
+
+
+var_dump(DB::connection('file'));

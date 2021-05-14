@@ -7,9 +7,8 @@ use FileDB\DBBuilderInterface;
 class MySQLDBBuilder implements DBBuilderInterface
 {
     public array $query;
-    public array $arrays;
     public string $where = "WHERE ";
-    public string $or;
+    public string $or = "";
     protected string $table;
     protected MySQLDBDriver $connection;
 
@@ -48,12 +47,12 @@ class MySQLDBBuilder implements DBBuilderInterface
     }
 
     /**
-     * @param int $key
-     * @param int $symbol
-     * @param int $value
+     * @param string|int $key
+     * @param string $symbol
+     * @param string|int|float $value
      * @return $this
      */
-    public function where($key = 0, $symbol = 0, $value = 0)
+    public function where(string|int $key, string $symbol, string|int|float $value)
     {
         if (strlen($this->where) <= 7) {
             $this->where .= sprintf(" %s %s '%s' ", $key, $symbol, $value);
@@ -67,25 +66,20 @@ class MySQLDBBuilder implements DBBuilderInterface
     }
 
     /**
-     * @param int $key
-     * @param int $symbol
-     * @param int $value
-     * @return $this
+     * @param string|int $key
+     * @param string $symbol
+     * @param string|int|float $value
+     * @return self
      */
-    public function orWhere($key = 0, $symbol = 0, $value = 0)
+    public function orWhere(string|int $key, string $symbol, string|int|float $value): self
     {
-        if (!isset($this->or)) {
-            $this->or = "";
-        }
-        if (isset($this->query['where']) && ($key !== 0 && $symbol !== 0 && $value !== 0)) {
+        if (isset($this->query['where'])) {
             $this->or .= sprintf(" OR %s %s '%s'", $key, $symbol, $value);
             $this->query['orWhere'] = $this->or;
-            return $this;
         } else {
             $this->query['orWhere'] = '';
-            return $this;
         }
-
+        return $this;
     }
 
     /**

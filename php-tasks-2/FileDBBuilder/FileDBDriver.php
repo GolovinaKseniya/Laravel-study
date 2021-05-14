@@ -11,22 +11,34 @@ class FileDBDriver
     private array $searchTerms;
     private array $searchResult;
 
+    /**
+     * FileDBDriver constructor.
+     * @param $config
+     */
     public function __construct($config)
     {
         $this->config['extension'] = $config['extension'];
         $this->config['path'] = $config['path'];
     }
 
-    public function file($filename)
+    /**
+     * @param $filename
+     * @return self
+     */
+    public function file($filename): self
     {
         $this->filename = $this->config['path'] . DIRECTORY_SEPARATOR . $filename;
 
         return $this;
     }
 
-    public function update($array)
+    /**
+     * @param array $array
+     * @return self
+     */
+    public function update(array $array): self
     {
-        $newName = 'new';
+        $newName = $this->randomFilename(15);
         $handle = fopen($this->filename, "a+");
         $writeHandle = fopen($newName, "w+");
         $tmpValues = [];
@@ -60,7 +72,10 @@ class FileDBDriver
         return $this;
     }
 
-    public function append($value): void
+    /**
+     * @param array $value
+     */
+    public function append(array $value): void
     {
         $fp = fopen($this->filename, "a+");
 
@@ -69,7 +84,11 @@ class FileDBDriver
         fclose($fp);
     }
 
-    public function read($keys = "*")
+    /**
+     * @param string $keys
+     * @return array
+     */
+    public function read(array|string $keys = "*"): array
     {
         $resultValues = [];
 
@@ -90,18 +109,18 @@ class FileDBDriver
         return $resultValues;
     }
 
-    public function delete()
+    /**
+     * @return self
+     */
+    public function delete(): self
     {
-        $newName = 'new';
-
+        $newName = $this->randomFilename(15);
 
         $handle = fopen($this->filename, "a+");
         $writeHandle = fopen($newName, "w+");
-        $tmpValues = [];
 
         if ($handle) {
             while (($line = fgets($handle)) !== false) {
-                array_push($tmpValues, json_decode($line, true));
                 $decodedArray = json_decode($line, true);
 
                 if (in_array($decodedArray, $this->searchResult)) {
@@ -123,7 +142,12 @@ class FileDBDriver
         return $this;
     }
 
-    public function find(array $and, array $or = [])
+    /**
+     * @param array $and
+     * @param array $or
+     * @return self
+     */
+    public function find(array $and, array $or = []): self
     {
         $handle = fopen($this->filename, "r");
 
@@ -148,7 +172,11 @@ class FileDBDriver
         return $this;
     }
 
-    public function check($array)
+    /**
+     * @param array $array
+     * @return bool
+     */
+    public function check(array $array): bool
     {
         $str = 'return';
         $partOr = $this->getOrPart($array);
@@ -159,7 +187,11 @@ class FileDBDriver
         return (eval($str . ';'));
     }
 
-    public function getAndPart($array)
+    /**
+     * @param array $array
+     * @return string
+     */
+    public function getAndPart(array $array): string
     {
         $part = "(";
 
@@ -182,7 +214,11 @@ class FileDBDriver
         return $part;
     }
 
-    public function getOrPart($array)
+    /**
+     * @param array $array
+     * @return string
+     */
+    public function getOrPart(array $array): string
     {
         $part = " || ";
 
@@ -205,7 +241,13 @@ class FileDBDriver
         return $part;
     }
 
-    public function checkSign($sign, $value1, $value2)
+    /**
+     * @param string $sign
+     * @param string|int|float $value1
+     * @param string|int|float $value2
+     * @return bool
+     */
+    public function checkSign(string $sign, string|int|float $value1, string|int|float $value2): bool
     {
         switch ($sign) {
             case "=":
@@ -229,5 +271,21 @@ class FileDBDriver
             default:
                 return false;
         }
+    }
+
+    /**
+     * @param int $length
+     * @return string
+     */
+    private function randomFilename(int $length): string
+    {
+        $key = '';
+        $keys = array_merge(range(0, 9), range('a', 'z'));
+
+        for ($i = 0; $i < $length; $i++) {
+            $key .= $keys[array_rand($keys)];
+        }
+
+        return $key;
     }
 }
