@@ -1,4 +1,5 @@
 <?php
+
 namespace MySQLDBBuilder;
 
 use FileDB\DBBuilderInterface;
@@ -6,7 +7,9 @@ use FileDB\DBBuilderInterface;
 class MySQLDBBuilder implements DBBuilderInterface
 {
     public array $query;
-    public string $where;
+    public array $arrays;
+    public string $where = "WHERE ";
+    public string $or;
     protected string $table;
     protected MySQLDBDriver $connection;
 
@@ -48,33 +51,18 @@ class MySQLDBBuilder implements DBBuilderInterface
      * @param int $key
      * @param int $symbol
      * @param int $value
-     * @return $this|string
+     * @return $this
      */
     public function where($key = 0, $symbol = 0, $value = 0)
     {
-//        $this->query['where'] = [$key, $symbol, $value];
-//
-//        if(isset($this->query['where'])) {
-//            array_push($this->query['where'], [$key, $symbol, $value]);
-//        }
+        if (strlen($this->where) <= 7) {
+            $this->where .= sprintf(" %s %s '%s' ", $key, $symbol, $value);
+        } else {
+            $this->where .= sprintf("AND %s %s '%s' ", $key, $symbol, $value);
+        }
 
-        var_dump($this->query);
+        $this->query['where'] = $this->where;
 
-//        if(isset($this->query['where'])) {
-//            $str = "WHERE ";
-//            array_push($this->query['where'], [$key, $symbol, $value]);
-//        } else {
-//            $str = " AND ";
-//        }
-//
-//        if ($key === 0 && $symbol === 0 && $value === 0) {
-//            return '';
-//        }
-//
-//        $queryPart = sprintf("%s %s '%s'", $key, $symbol, $value);
-//        $this->query['where'] .= $queryPart;
-//
-//        $this->where .= $queryPart;
         return $this;
     }
 
@@ -86,16 +74,18 @@ class MySQLDBBuilder implements DBBuilderInterface
      */
     public function orWhere($key = 0, $symbol = 0, $value = 0)
     {
-        array_push($this->query['orWhere'], [$key, $symbol, $value]);
-
+        if (!isset($this->or)) {
+            $this->or = "";
+        }
         if (isset($this->query['where']) && ($key !== 0 && $symbol !== 0 && $value !== 0)) {
-            $queryPart = sprintf(" OR %s %s '%s'", $key, $symbol, $value);
-            $this->query['orWhere'] .= $queryPart;
+            $this->or .= sprintf(" OR %s %s '%s'", $key, $symbol, $value);
+            $this->query['orWhere'] = $this->or;
             return $this;
         } else {
             $this->query['orWhere'] = '';
             return $this;
         }
+
     }
 
     /**
@@ -119,7 +109,6 @@ class MySQLDBBuilder implements DBBuilderInterface
         }
 
         $query = trim($query);
-//        var_dump($this->query);
         return $this->connection->select($query);
     }
 
@@ -171,9 +160,9 @@ class MySQLDBBuilder implements DBBuilderInterface
         $i = 0;
 
         foreach ($array as $key => $value) {
-            if(++$i === count($array)) {
+            if (++$i === count($array)) {
                 $query .= "$key='$value' ";
-            } else if(count($array) > 1) {
+            } else if (count($array) > 1) {
                 $query .= "$key='$value', ";
             }
         }
