@@ -5,4 +5,6 @@ use StaticFactory\DBFactory;
 
 $config = include_once "../config/config.php";
 
-$mysqlDbFactory = DBFactory::make($config['file']);
+$mysqlDBFactory = DBFactory::make($config['mysql']);
+
+$mysqlDBFactory->table('test');

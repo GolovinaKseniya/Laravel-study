@@ -9,14 +9,17 @@ class DBFactory
 {
     public static function make($type)
     {
-        var_dump(key($type));
-//        switch (key($type)) {
-//            case "mysql":
-//                return new MySQLDBConnection($type['mysql']);
-//            case "file":
-//                return new FileDBConnection($type['file']);
-//        }
+        $config = include "../config/config.php";
 
-//        throw new \Exception('err');
+        if (in_array($type, $config)) {
+            $key = array_search($type, $config);
+
+            switch ($key) {
+                case "mysql":
+                    return new MySQLDBConnection($type);
+                case "file":
+                    return new FileDBConnection($type);
+            }
+        }
     }
 }
