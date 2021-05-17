@@ -1,5 +1,6 @@
 <?php
 
+namespace Factory;
 
 use FileDB\DBBuilderInterface;
 

@@ -82,7 +82,7 @@ class FileDBBuilder implements DBBuilderInterface
     /**
      * @param array $array
      */
-    public function insert($array)
+    public function insert(array $array)
     {
         $this->fd
             ->file($this->table)
@@ -93,7 +93,7 @@ class FileDBBuilder implements DBBuilderInterface
      * @param array $array
      * @return mixed
      */
-    public function update($array)
+    public function update(array $array)
     {
         return $this->fd
             ->file($this->table)

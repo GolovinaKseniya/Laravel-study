@@ -2,12 +2,11 @@
 
 
 namespace Factory;
-
-
+use Factory\DBFactoryInterface;
 use FileDB\FileDBBuilder;
 use FileDB\FileDBDriver;
 
-class FileDBConnection implements \DBFactoryInterface
+class FileDBConnection implements DBFactoryInterface
 {
     /**
      * @var FileDBDriver
