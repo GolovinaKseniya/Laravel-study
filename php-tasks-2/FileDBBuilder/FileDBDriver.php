@@ -38,6 +38,8 @@ class FileDBDriver
      */
     public function update(array $array): self
     {
+        $this->search();
+
         $newName = $this->randomFilename(15);
         $handle = fopen($this->filename, "a+");
         $writeHandle = fopen($newName, "w+");
@@ -90,6 +92,8 @@ class FileDBDriver
      */
     public function read(array|string $keys = "*"): array
     {
+        $this->search();
+
         $resultValues = [];
 
         if ($keys === "*") {
@@ -114,6 +118,8 @@ class FileDBDriver
      */
     public function delete(): self
     {
+        $this->search();
+
         $newName = $this->randomFilename(15);
 
         $handle = fopen($this->filename, "a+");
@@ -149,26 +155,9 @@ class FileDBDriver
      */
     public function find(array $and, array $or = []): self
     {
-        $handle = fopen($this->filename, "r");
-
-        $result = [];
         $this->searchTerms['and'] = $and;
         $this->searchTerms['or'] = $or;
 
-
-        if ($handle) {
-            while (($line = fgets($handle)) !== false) {
-                $tmp = json_decode($line, true);
-
-                if ($this->check($tmp)) {
-                    array_push($result, $tmp);
-                }
-            }
-
-            fclose($handle);
-        }
-
-        $this->searchResult = $result;
         return $this;
     }
 
@@ -207,7 +196,6 @@ class FileDBDriver
                         $part .= " && ";
                     }
                 }
-
             }
         }
 
@@ -287,5 +275,29 @@ class FileDBDriver
         }
 
         return $key;
+    }
+
+    /**
+     * @return $this
+     */
+    private function search()
+    {
+        $handle = fopen($this->filename, "r");
+        $result = [];
+
+        if ($handle) {
+            while (($line = fgets($handle)) !== false) {
+                $tmp = json_decode($line, true);
+
+                if ($this->check($tmp)) {
+                    array_push($result, $tmp);
+                }
+            }
+
+            fclose($handle);
+        }
+
+        $this->searchResult = $result;
+        return $this;
     }
 }
