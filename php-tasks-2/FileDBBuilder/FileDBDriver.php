@@ -9,7 +9,7 @@ class FileDBDriver
     public string $filename;
 
     private array $searchTerms;
-    private array $searchResult;
+    private array $searchResult = [];
 
     /**
      * FileDBDriver constructor.
@@ -49,10 +49,9 @@ class FileDBDriver
             while (($line = fgets($handle)) !== false) {
                 array_push($tmpValues, json_decode($line, true));
 
-
                 $decodedArray = json_decode($line, true);
-                if ($this->check($decodedArray)) {
 
+                if ($this->check($decodedArray)) {
                     $decodedArray[key($array)] = $array[key($array)];
 
                     $tmp = json_encode($decodedArray) . PHP_EOL;
@@ -90,7 +89,7 @@ class FileDBDriver
      * @param array|string $keys
      * @return array
      */
-    public function read(array|string $keys = "*"): array
+    public function read($keys = "*"): array
     {
         $this->search();
 
@@ -167,66 +166,55 @@ class FileDBDriver
      */
     public function check(array $array): bool
     {
-        $str = 'return';
-        $partOr = $this->getOrPart($array);
-        $partAnd = $this->getAndPart($array);
-
-        $str .= $partAnd . $partOr;
-
-        return (eval($str . ';'));
+        return ($this->getAndPart($array) || $this->getOrPart($array));
     }
 
     /**
      * @param array $array
-     * @return string
+     * @return bool
      */
-    public function getAndPart(array $array): string
+    public function getAndPart(array $array): bool
     {
-        $part = "(";
-
-        foreach ($this->searchTerms['and'] as $skey => $searchTerm) {
+        $result = [];
+        foreach ($this->searchTerms['and'] as $searchTerm) {
             foreach ($array as $key => $item) {
-                if ($searchTerm[0] === $key) {
-                    if ($skey === (count($this->searchTerms['and']) - 1)) {
-                        $part .= ($this->checkSign($searchTerm[1], $item, $searchTerm[2])) ? 1 : 0;
-                        $part .= ")";
-                        break;
+                if ($searchTerm[0] == $key) {
+                    if ($this->checkSign($searchTerm[1], $item, $searchTerm[2])) {
+                        array_push($result, 1);
+                        continue;
                     } else {
-                        $part .= ($this->checkSign($searchTerm[1], $item, $searchTerm[2])) ? 1 : 0;
-                        $part .= " && ";
+                        array_push($result, 0);
+                    }
+                }
+            }
+        }
+        $str = 'return ';
+        return eval($str . implode("&&", $result) . ';');
+    }
+
+    /**
+     * @param array $array
+     * @return bool
+     */
+    public function getOrPart(array $array): bool
+    {
+        $result = [];
+        foreach ($this->searchTerms['or'] as $searchTerm) {
+            foreach ($array as $key => $item) {
+                if ($searchTerm[0] == $key) {
+                    if ($this->checkSign($searchTerm[1], $item, $searchTerm[2])) {
+                        array_push($result, 1);
+                        array_push($this->searchResult, $array);
+                    } else {
+                        array_push($result, 0);
+                        continue;
                     }
                 }
             }
         }
 
-        return $part;
-    }
-
-    /**
-     * @param array $array
-     * @return string
-     */
-    public function getOrPart(array $array): string
-    {
-        $part = " || ";
-
-        foreach ($this->searchTerms['or'] as $skey => $searchTerm) {
-            foreach ($array as $key => $item) {
-                if ($searchTerm[0] === $key) {
-                    if ($skey === (count($this->searchTerms['or']) - 1)) {
-                        $part .= ($this->checkSign($searchTerm[1], $item, $searchTerm[2])) ? 1 : 0;
-                        $part .= "";
-                        break;
-                    } else {
-                        $part .= ($this->checkSign($searchTerm[1], $item, $searchTerm[2])) ? 1 : 0;
-                        $part .= " || ";
-                    }
-                }
-
-            }
-        }
-
-        return $part;
+        $str = 'return ';
+        return eval($str . implode("&&", $result) . ';');
     }
 
     /**
@@ -235,7 +223,7 @@ class FileDBDriver
      * @param string|int|float $value2
      * @return bool
      */
-    public function checkSign(string $sign, string|int|float $value1, string|int|float $value2): bool
+    public function checkSign(string $sign, $value1, $value2): bool
     {
         switch ($sign) {
             case "=":
@@ -282,6 +270,7 @@ class FileDBDriver
      */
     private function search()
     {
+        var_dump($this->searchResult);
         $handle = fopen($this->filename, "r");
         $result = [];
 
@@ -289,15 +278,12 @@ class FileDBDriver
             while (($line = fgets($handle)) !== false) {
                 $tmp = json_decode($line, true);
 
-                if ($this->check($tmp)) {
-                    array_push($result, $tmp);
-                }
+                $this->check($tmp);
             }
 
             fclose($handle);
         }
 
-        $this->searchResult = $result;
         return $this;
     }
 }

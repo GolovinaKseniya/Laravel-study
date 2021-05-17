@@ -19,15 +19,15 @@ $config = [
 $fd = new \FileDB\FileDBDriver($config);
 
 $fdBuilder = new \FileDB\FileDBBuilder($fd, 'test');
-var_dump(
+//var_dump(
 $fd
     ->file('test')
     ->find(
     [['id', '=', 1], ['name', '=', 'test']],
-    [['title', '=', 'title555'], ['title', '=', 'title333']]
+    [['title', '=', 'title444'], ['title', '=', 'title333']]
     )
-    ->update(['name' => 'test1555'])
-)
+    ->update(['name' => 'ggg'])
+//)
 ;
 
 
