@@ -3,7 +3,6 @@
 
 namespace Factory;
 
-use Factory\DBFactoryInterface;
 use FileDB\DBBuilderInterface;
 use MySQLDBBuilder\MySQLDBBuilder;
 use MySQLDBBuilder\MySQLDBDriver;

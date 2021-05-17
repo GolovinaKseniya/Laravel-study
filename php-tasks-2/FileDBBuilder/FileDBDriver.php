@@ -49,7 +49,7 @@ class FileDBDriver
 
 
                 $decodedArray = json_decode($line, true);
-                if (in_array($decodedArray, $this->searchResult)) {
+                if ($this->check($decodedArray)) {
 
                     $decodedArray[key($array)] = $array[key($array)];
 
@@ -85,7 +85,7 @@ class FileDBDriver
     }
 
     /**
-     * @param string $keys
+     * @param array|string $keys
      * @return array
      */
     public function read(array|string $keys = "*"): array
@@ -123,7 +123,7 @@ class FileDBDriver
             while (($line = fgets($handle)) !== false) {
                 $decodedArray = json_decode($line, true);
 
-                if (in_array($decodedArray, $this->searchResult)) {
+                if ($this->check($decodedArray)) {
                     continue;
                 } else {
                     $tmp = $line;

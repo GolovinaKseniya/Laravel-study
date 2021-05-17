@@ -2,7 +2,6 @@
 
 namespace Facade;
 
-use Factory\DBFactoryInterface;
 use StaticFactory\DBFactory;
 
 class DB

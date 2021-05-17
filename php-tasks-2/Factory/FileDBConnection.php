@@ -2,7 +2,6 @@
 
 
 namespace Factory;
-use Factory\DBFactoryInterface;
 use FileDB\FileDBBuilder;
 use FileDB\FileDBDriver;
 

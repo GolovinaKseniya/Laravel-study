@@ -3,7 +3,7 @@ namespace FileDB;
 
 class FileDBBuilder implements DBBuilderInterface
 {
-    public $fd;
+    public FileDBDriver $fd;
     public string $table;
 
     public array $conditions = [
@@ -16,6 +16,7 @@ class FileDBBuilder implements DBBuilderInterface
     /**
      * FileDBBuilder constructor.
      * @param $fd
+     * @param $table
      */
     public function __construct($fd, $table)
     {

@@ -5,38 +5,29 @@ use Factory\MySQLDBConnection;
 
 require_once '../vendor/autoload.php';
 
-
-$exampleArray = [
-    ['id' => 'test', 'title' => '1234', 'name' => 12344],
-    ['id' => 'ffff', 'title' => 'ggg', 'name' => 5888, 'age' => '22', 'city' => 'London']
+$config = [
+    'extension' => '.txt',
+    'path' => 'storage'
 ];
 
 //$config = [
-//    'extension' => '.txt',
-//    'path' => 'storage'
+//    'db' => 'mysql:host=localhost;dbname=test',
+//    'user' => 'root',
+//    'pass' => '123456'
 //];
 
-$config = [
-    'db' => 'mysql:host=localhost;dbname=test',
-    'user' => 'root',
-    'pass' => '123456'
-];
+$fd = new \FileDB\FileDBDriver($config);
 
-//$fd = new \FileDB\FileDBDriver($config);
+$fdBuilder = new \FileDB\FileDBBuilder($fd, 'test');
 
-//$fdBuilder = new \FileDB\FileDBBuilder($fd, 'test');
-//
-//$fd
-//    ->file('test')
-//    ->find(
-//    [['id', '=', 1], ['title', '=', 'title111'], ['name', '=', 'test']],
-//    [['title', '=', 'title555'], ['title', '=', 'title333']]
-//    )
-//    ->delete()
-//;
-
-$fd = new MySQLDBDriver($config);
-$fdBuilder = new \MySQLDBBuilder\MySQLDBBuilder()
+$fd
+    ->file('test')
+    ->find(
+    [['id', '=', 1], ['name', '=', 'test11']],
+    [['title', '=', 'title555'], ['title', '=', 'title333']]
+    )
+    ->update(['name' => 'test'])
+;
 
 
 //$mysqlDbFactory = new MySQLDBConnection($fd);

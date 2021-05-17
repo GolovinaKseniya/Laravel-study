@@ -5,8 +5,6 @@ use Facade\DB;
 
 $test = new DB();
 
-$с = DB::connection('mysql');
+DB::connection('mysql');
 
-var_dump(DB::$connection);
-
-var_dump(DB::table('test'));
+DB::table('test');
